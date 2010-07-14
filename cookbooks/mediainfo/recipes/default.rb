@@ -24,6 +24,6 @@ node[:applications].each do |app_name,data|
       execute "build mi package" do
         command "cd /data/#{mi_dir} && ./CLI_Compile.sh && cd /data/#{mi_dir}/MediaInfo/Project/GNU/CLI && make install"
       end 
+      
     end
   end
-end
