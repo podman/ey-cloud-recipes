@@ -17,7 +17,7 @@ node[:applications].each do |app_name,data|
       end
 
       execute "unarchive mi-to-install" do
-        command "cd /data && tar zxf #{mi_file} && sync"
+        command "cd /data && tar jzxf #{mi_file} && sync"
         not_if { FileTest.directory?("/data/#{mi_dir}") }
       end
       
