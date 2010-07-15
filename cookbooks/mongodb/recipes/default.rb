@@ -67,17 +67,6 @@ if node[:instance_role] == 'util' && node[:name].match(/^mongodb_/)
     })
   end
   
-  #app config file
-  template "/data/#{app_name}/shared/config/mongodb.yml" do
-    source "mongodb.yml.erb"
-    owner user[:username]
-    group user[:username]
-    mode 0744
-    variable({
-      :server_names => node[:members]
-    })
-  end  
-  
   execute "enable-mongodb" do
     command "rc-update add mongodb default"
     action :run
@@ -109,6 +98,18 @@ if node[:instance_role] == 'util' && node[:name].match(/^mongodb_/)
       command "/usr/bin/mongo admin --eval 'db.auth(\"root\",\"#{user[:password]}\"); db.getMongo().getDB(\"#{db_name}\").addUser(\"#{user[:username]}\",\"#{user[:password]}\")'"      
       action :run
       not_if "/usr/bin/mongo #{db_name} --eval 'db.auth(\"#{user[:username]}\",\"#{user[:password]}\")' | grep -q ^1$"
-    end    
+    end
+    
+    #app config file
+    template "/data/#{app_name}/shared/config/mongodb.yml" do
+      source "mongodb.yml.erb"
+      owner user[:username]
+      group user[:username]
+      mode 0744
+      variable({
+        :server_names => node[:members]
+      })
+    end
+        
   end
 end
