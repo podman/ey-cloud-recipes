@@ -10,18 +10,12 @@ node[:applications].each do |app_name,data|
       
       host = 'localhost'
       
-      node[:utility_instances].each do |util_instance|
-        puts util_instance.inspect
-        
-        puts util_instance[:name].match(/^mongodb_/)
-        
+      node[:utility_instances].each do |util_instance|        
         if util_instance[:name].match(/^mongodb_/)
           host = util_instance[:hostname]
         end
       end
-      
-      puts host
-      
+            
       template "/data/#{app_name}/shared/config/mongodb.yml" do
         source "mongodb.yml.erb"
         owner user[:username]
