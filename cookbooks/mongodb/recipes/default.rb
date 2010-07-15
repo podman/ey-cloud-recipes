@@ -2,6 +2,27 @@
 # Cookbook Name:: mongodb
 # Recipe:: default
 #
+case node[:instance_role]
+  when 'solor', 'app', 'app_master'
+    
+    node[:engineyard][:environment][:instances].each do |instance|
+      if instance[:role] == 'util' && instance[:name].match(/^mongodb_/)
+        host = instance[:private_hostname]
+      end
+    end
+    
+    template "/data/#{app_name}/shared/config/mongodb.yml" do
+      source "mongodb.yml.erb"
+      owner user[:username]
+      group user[:username]
+      mode 0744
+      variables({
+        :host => host
+      })
+    end
+    
+  end
+end
 
 if node[:instance_role] == 'util' && node[:name].match(/^mongodb_/)
 
@@ -98,18 +119,6 @@ if node[:instance_role] == 'util' && node[:name].match(/^mongodb_/)
       command "/usr/bin/mongo admin --eval 'db.auth(\"root\",\"#{user[:password]}\"); db.getMongo().getDB(\"#{db_name}\").addUser(\"#{user[:username]}\",\"#{user[:password]}\")'"      
       action :run
       not_if "/usr/bin/mongo #{db_name} --eval 'db.auth(\"#{user[:username]}\",\"#{user[:password]}\")' | grep -q ^1$"
-    end
-    
-    #app config file
-    template "/data/#{app_name}/shared/config/mongodb.yml" do
-      source "mongodb.yml.erb"
-      owner user[:username]
-      group user[:username]
-      mode 0744
-      variables({
-        :server_names => node[:members]
-      })
-    end
-        
+    end 
   end
 end
