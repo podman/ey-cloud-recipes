@@ -8,9 +8,9 @@ node[:applications].each do |app_name,data|
   case node[:instance_role]
     when 'solor', 'app', 'app_master'
     
-      node[:engineyard][:environment][:instances].each do |instance|
-        if instance[:role] == 'util' && instance[:name].match(/^mongodb_/)
-          host = instance[:private_hostname]
+      node[:utility_instances].each do |util_instance|
+        if util_instance[:name].match(/^mongodb_(master|masterslave)/)
+          host = util_instance[:hostname]
         end
       end
     
