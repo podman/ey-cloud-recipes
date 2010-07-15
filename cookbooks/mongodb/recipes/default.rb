@@ -106,7 +106,7 @@ if node[:instance_role] == 'util' && node[:name].match(/^mongodb_/)
       owner user[:username]
       group user[:username]
       mode 0744
-      variable({
+      variables({
         :server_names => node[:members]
       })
     end
