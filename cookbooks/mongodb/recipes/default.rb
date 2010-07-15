@@ -10,6 +10,9 @@ node[:applications].each do |app_name,data|
     
       node[:utility_instances].each do |util_instance|
         puts util_instance.inspect
+        
+        puts util_instance[:name].match(/^mongodb_/)
+        
         if util_instance[:name].match(/^mongodb_/)
           host = util_instance[:hostname]
         end
