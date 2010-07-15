@@ -23,6 +23,7 @@ node[:applications].each do |app_name,data|
       
       execute "build mi package" do
         command "cd /data/#{mi_dir} && ./CLI_Compile.sh && cd /data/#{mi_dir}/MediaInfo/Project/GNU/CLI && make install"
+        not_if { FileTest.exists?("/usr/local/bin/mediainfo") }
       end 
       
     end
