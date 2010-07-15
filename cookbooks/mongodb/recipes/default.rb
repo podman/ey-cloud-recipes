@@ -9,11 +9,14 @@ node[:applications].each do |app_name,data|
     when 'solor', 'app', 'app_master'
     
       node[:utility_instances].each do |util_instance|
-        if util_instance[:name].match(/^mongodb_(master|masterslave)/)
+        puts util_instance.inspect
+        if util_instance[:name].match(/^mongodb_/)
           host = util_instance[:hostname]
         end
       end
-    
+      
+      puts host
+      
       template "/data/#{app_name}/shared/config/mongodb.yml" do
         source "mongodb.yml.erb"
         owner user[:username]
