@@ -21,7 +21,6 @@ case node[:instance_role]
       })
     end
     
-  end
 end
 
 if node[:instance_role] == 'util' && node[:name].match(/^mongodb_/)
