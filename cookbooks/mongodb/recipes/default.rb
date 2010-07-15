@@ -5,6 +5,8 @@
 case node[:instance_role]
   when 'solor', 'app', 'app_master'
     
+    app_name = node[:engineyard][:environment][:apps][0][:name]
+    
     node[:engineyard][:environment][:instances].each do |instance|
       if instance[:role] == 'util' && instance[:name].match(/^mongodb_/)
         host = instance[:private_hostname]
