@@ -65,6 +65,17 @@ if node[:instance_role] == 'util' && node[:name].match(/^mongodb_/)
     variables({
       :mongodb_options => mongodb_options
     })
+  end
+  
+  #app config file
+  template "/data/#{app_name}/shared/config/mongodb.yml" do
+    source "mongodb.yml.erb"
+    owner user[:username]
+    group user[:username]
+    mode 0744
+    variable({
+      :server_names => node[:members]
+    })
   end  
   
   execute "enable-mongodb" do
