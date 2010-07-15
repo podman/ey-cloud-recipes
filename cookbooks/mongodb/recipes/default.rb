@@ -7,7 +7,9 @@ node[:applications].each do |app_name,data|
   
   case node[:instance_role]
     when 'solor', 'app', 'app_master'
-    
+      
+      host = 'localhost'
+      
       node[:utility_instances].each do |util_instance|
         puts util_instance.inspect
         
