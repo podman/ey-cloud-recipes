@@ -43,7 +43,7 @@ node[:applications].each do |app_name,data|
         
         execute "build geoip for node" do
           command "cd /data/#{app_name}/current/vendor/node/deps/node-geoip && node-waf configure build"
-          nof_if {FileTest.exists?("/data/#{app_name}/current/vendor/node/deps/lib/ceoip.node")}
+          not_if {FileTest.exists?("/data/#{app_name}/current/vendor/node/deps/lib/ceoip.node")}
         end
         
       end
