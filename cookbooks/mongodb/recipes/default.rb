@@ -29,7 +29,7 @@ node[:applications].each do |app_name,data|
       end
     when 'util'
       if node[:name] == 'mongodb_master'
-        template "/data/#{app_name}/shared/vendor/node/mongodb.json" do
+        template "/data/#{app_name}/config/mongodb.json" do
           source "mongodb.json.erb"
           owner user[:username]
           group user[:username]
