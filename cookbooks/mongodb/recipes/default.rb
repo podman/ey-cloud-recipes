@@ -27,7 +27,21 @@ node[:applications].each do |app_name,data|
           :password => user[:password]
         })
       end
-    end    
+    when 'util'
+      if node[:name] == 'mongodb_master'
+        template "/data/#{app_name}/shared/vendor/node/mongodb.json" do
+          source "mongodb.json.erb"
+          owner user[:username]
+          group user[:username]
+          mode 0744
+          variables({
+            :username => user[:username],
+            :password => user[:password]
+          })
+        end
+      end
+  end 
+       
 end
 
 if node[:instance_role] == 'util' && node[:name].match(/^mongodb_/)
@@ -104,17 +118,6 @@ if node[:instance_role] == 'util' && node[:name].match(/^mongodb_/)
     action :run
     not_if "/etc/init.d/mongodb status"
   end
-  
-  template "/data/#{app_name}/shared/vendor/node/mongodb.json" do
-    source "mongodb.json.erb"
-    owner user[:username]
-    group user[:username]
-    mode 0744
-    variables({
-      :username => user[:username],
-      :password => user[:password]
-    })
-  end  
   
   node[:applications].each do |app_name,data|
     user = node[:users].first
