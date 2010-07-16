@@ -27,6 +27,24 @@ node[:applications].each do |app_name,data|
           not_if { FileTest.exists?("/usr/local/bin/node") }
         end
         
+        remote_file "/data/GeoIP.tar.gz" do
+          source "http://geolite.maxmind.com/download/geoip/api/c/GeoIP.tar.gz"
+          owner node[:owner_name]
+          group node[:owner_name]
+          mode 0644
+          backup 0
+          not_if {FileTest.exists?("/data/GeoIP.tar.gz")}
+        end
+        
+        execute "unarchive geoip api" do
+          command "cd /data && tar xzf GeoIP.tar.gz"
+          not_if {FileTest.directory?("/data/GeoIP-1.4.6")}
+        end
+        
+        execute "build geoip api" do
+          command "cd /data/GeoIP-1.4.6 && ./configure && make && make check && make install"
+        end
+        
         remote_file "/data/GeoLiteCity.dat.gz" do
           source "http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz"
           owner node[:owner_name]
