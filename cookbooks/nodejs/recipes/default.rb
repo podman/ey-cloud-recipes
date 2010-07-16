@@ -37,7 +37,7 @@ node[:applications].each do |app_name,data|
         end
         
         execute "unarchive geolite city db" do
-          command "cd /data && tar zxf GeoLiteCity.dat.gz"
+          command "cd /data && gunzip GeoLiteCity.dat.gz"
           not_if {FileTest.exists?("/data/GeoLiteCity.dat")}
         end
         
