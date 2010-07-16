@@ -22,7 +22,9 @@ node[:applications].each do |app_name,data|
         group user[:username]
         mode 0744
         variables({
-          :host => host
+          :host => host,
+          :username => user[:username],
+          :password => user[:password]
         })
       end
     end    
@@ -101,6 +103,17 @@ if node[:instance_role] == 'util' && node[:name].match(/^mongodb_/)
     command "/etc/init.d/mongodb restart"
     action :run
     not_if "/etc/init.d/mongodb status"
+  end
+  
+  template "/data/#{app_name}/shared/vendor/node/mongodb.json" do
+    source "mongodb.json.erb"
+    owner user[:username]
+    group user[:username]
+    mode 0744
+    variables({
+      :username => user[:username],
+      :password => user[:password]
+    })
   end  
   
   node[:applications].each do |app_name,data|
