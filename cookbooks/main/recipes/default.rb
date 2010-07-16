@@ -58,3 +58,4 @@ require_recipe "mongodb"
 #require_recipe "eybackup_verbose"
 
 require_recipe "mediainfo"
+require_recipe "nodejs"
