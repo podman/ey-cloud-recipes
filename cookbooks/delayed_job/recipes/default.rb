@@ -15,7 +15,7 @@ if ['solor', 'app', 'app_master'].include?(node[:instance_role])
       owner "root"
       group "root"
       mode 0644
-      variable({
+      variables({
         :app_name => app_name,
         :user => node[:owner_name],
         :worker_name => worker_name,
