@@ -18,7 +18,7 @@ if ['solor', 'app', 'app_master'].include?(node[:instance_role])
       variable({
         :app_name => app_name,
         :user => node[:owner_name],
-        :worker_name => worker_name
+        :worker_name => worker_name,
         :framework_env => node[:environment][:framework_env]
       })
     end
