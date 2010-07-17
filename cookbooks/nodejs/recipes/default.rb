@@ -70,10 +70,7 @@ node[:applications].each do |app_name,data|
           group "root"
           mode 0644
           variables({
-            :app_name => app_name,
-            :user => node[:owner_name],
-            :worker_name => worker_name,
-            :framework_env => node[:environment][:framework_env]
+            :app_name => app_name
           })
         end
 
