@@ -1,0 +1,7 @@
+check host nodejs with address 0.0.0.0
+  start program = "cd /data/<%= @app_name %>/current/vendor/node && node server.js"
+  stop program = "pkill node"
+  if failed port 80 protocol HTTP
+    request /
+    with timeout 10 seconds
+    then restart
