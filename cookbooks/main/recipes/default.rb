@@ -59,3 +59,4 @@ require_recipe "mongodb"
 
 require_recipe "mediainfo"
 require_recipe "nodejs"
+require_recipe "delayed_job"
