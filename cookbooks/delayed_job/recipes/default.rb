@@ -29,8 +29,9 @@ if ['solor', 'app', 'app_master'].include?(node[:instance_role])
       code "pkill -9 monit && monit"
     end
     
-    execute "restart monit" do
-      command "monit restart delayed_job"
+    execute "restart deplayed job" do
+      user "root"
+      command "pkill -9 'Delayed'"
     end
     
   end
