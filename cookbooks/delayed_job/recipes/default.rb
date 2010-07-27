@@ -31,7 +31,7 @@ if ['solor', 'app', 'app_master'].include?(node[:instance_role])
     
     execute "restart deplayed job" do
       user "root"
-      command "pkill -9 'Delayed'"
+      command "pkill -9 -f 'Delayed'"
     end
     
   end
