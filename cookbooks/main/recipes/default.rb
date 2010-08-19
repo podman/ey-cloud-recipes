@@ -29,7 +29,7 @@
 #require_recipe "ssmtp"
 
 #uncomment to run the mongodb recipe
-require_recipe "mongodb"
+#require_recipe "mongodb"
 
 #uncomment to run the sunspot recipe
 # require_recipe "sunspot"
@@ -57,6 +57,6 @@ require_recipe "mongodb"
 #uncomment to include the eybackup_verbose recipe
 #require_recipe "eybackup_verbose"
 
-require_recipe "mediainfo"
-require_recipe "nodejs"
-require_recipe "delayed_job"
+#require_recipe "mediainfo"
+#require_recipe "nodejs"
+#require_recipe "delayed_job"
