@@ -57,6 +57,7 @@ require_recipe "mongodb"
 #uncomment to include the eybackup_verbose recipe
 #require_recipe "eybackup_verbose"
 
-require_recipe "mediainfo"
-require_recipe "nodejs"
+#require_recipe "mediainfo"
+#require_recipe "nodejs"
 require_recipe "delayed_job"
+require_recipe "god"

@@ -16,8 +16,8 @@ node[:applications].each do |app_name,data|
         end
       end
             
-      template "/data/#{app_name}/shared/config/mongodb.yml" do
-        source "mongodb.yml.erb"
+      template "/data/#{app_name}/shared/config/mongo_config.rb" do
+        source "mongo_config.rb.erb"
         owner user[:username]
         group user[:username]
         mode 0744
@@ -26,19 +26,6 @@ node[:applications].each do |app_name,data|
           :username => user[:username],
           :password => user[:password]
         })
-      end
-    when 'util'
-      if node[:name] == 'mongodb_master'
-        template "/data/#{app_name}/shared/config/mongodb.json" do
-          source "mongodb.json.erb"
-          owner user[:username]
-          group user[:username]
-          mode 0744
-          variables({
-            :username => user[:username],
-            :password => user[:password]
-          })
-        end
       end
   end 
        
