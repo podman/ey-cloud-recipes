@@ -1,2 +1,3 @@
-MongoMapper.connection = Mongo::Connection.new('mongodb://<%=@username%>:<%=@password%>@<%=@host%>')
+MongoMapper.connection = Mongo::Connection.new('<%=@host%>')
 MongoMapper.database = "food-db"
+MongoMapper.database.authenticate('<%=@username%>', '<%=@password%>')

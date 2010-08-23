@@ -3,7 +3,8 @@ node[:applications].each do |app_name,data|
   
   case node[:instance_role]
     when 'util'
-      sudo "god -c /data/#{app_name}/current/config/god.rb"
-    end
+      execute 'start-god' do
+        command "god -c /data/#{app_name}/current/config/god.rb"
+      end
   end
 end
