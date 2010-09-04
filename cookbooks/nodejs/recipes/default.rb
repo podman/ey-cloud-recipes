@@ -24,7 +24,7 @@ node[:applications].each do |app_name,data|
 
         execute "build njs package" do
           command "cd /data/#{njs_dir} && ./configure && make && make install"
-          not_if { `node --verison`.strip == 'v0.2.0' FileTest.exists?("/usr/local/bin/node") }
+          not_if { `node --verison`.strip == 'v0.2.0' } #FileTest.exists?("/usr/local/bin/node")
         end
         
         remote_file "/data/GeoIP.tar.gz" do
