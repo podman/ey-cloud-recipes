@@ -4,9 +4,9 @@ node[:applications].each do |app_name,data|
   case node[:instance_role]
     when 'util'
       if node[:name] == 'mongodb_master'
-        njs_dir = "node-v0.1.100"
-        njs_file = "node-v0.1.100.tar.gz"
-        njs_url = "http://nodejs.org/dist/node-v0.1.100.tar.gz"
+        njs_dir = "node-v0.2.0"
+        njs_file = "node-v0.2.0.tar.gz"
+        njs_url = "http://nodejs.org/dist/node-v0.2.0.tar.gz"
 
         remote_file "/data/#{njs_file}" do
           source "#{njs_url}"
@@ -24,7 +24,7 @@ node[:applications].each do |app_name,data|
 
         execute "build njs package" do
           command "cd /data/#{njs_dir} && ./configure && make && make install"
-          not_if { FileTest.exists?("/usr/local/bin/node") }
+          not_if { `node --verison`.strip == 'v0.2.0' FileTest.exists?("/usr/local/bin/node") }
         end
         
         remote_file "/data/GeoIP.tar.gz" do
