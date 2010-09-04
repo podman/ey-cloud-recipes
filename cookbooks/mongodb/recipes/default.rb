@@ -6,7 +6,7 @@ node[:applications].each do |app_name,data|
   user = node[:users].first
   
   case node[:instance_role]
-    when 'solo', 'app', 'app_master'
+    when 'solo', 'app', 'app_master', 'util'
       
       host = 'localhost'
       
