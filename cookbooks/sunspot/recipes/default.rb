@@ -4,7 +4,7 @@
 #
  
 require 'digest/sha1'
- 
+if node[:instance_role] == 'app_master'
 node[:applications].each do |app,data|
  
   directory "/data/#{app}/jettyapps" do
@@ -78,4 +78,5 @@ node[:applications].each do |app,data|
     action :run
   end
  
+end
 end
