@@ -1,4 +1,4 @@
 check process vid2s3
   with pidfile /data/physicalfix/shared/pids/vid2s3.pid
-  start program = "thin -C /data/physicalfix/current/lib/vid2s3/config.yml -R /data/physicalfix/current/lib/vid2s3/config.ru start"
-  stop program = "thin -C /data/physicalfix/current/lib/vid2s3/config.yml -R /data/physicalfix/current/lib/vid2s3/config.ru stop"
+  start program = "/usr/bin/thin -C /data/physicalfix/current/lib/vid2s3/config.yml -R /data/physicalfix/current/lib/vid2s3/config.ru start"
+  stop program = "/usr/bin/thin -C /data/physicalfix/current/lib/vid2s3/config.yml -R /data/physicalfix/current/lib/vid2s3/config.ru stop"
