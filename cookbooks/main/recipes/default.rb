@@ -63,4 +63,4 @@ require_recipe "delayed_job"
 
 require_recipe "rtmplite"
 
-#require_recipe "vid2s3"
+require_recipe "vid2s3"
