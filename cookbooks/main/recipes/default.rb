@@ -60,4 +60,7 @@ require_recipe "sunspot"
 #require_recipe "mediainfo"
 #require_recipe "nodejs"
 require_recipe "delayed_job"
-require_recipe "god"
+
+require_recipe "rtmplite"
+
+#require_recipe "vid2s3"
