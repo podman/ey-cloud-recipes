@@ -2,7 +2,7 @@ node[:applications].each do |app_name,data|
   user = node[:users].first
 
   case node[:instance_role]
-    when "solo", "app", "app_master"
+    when "solo", "app", "app_master", "util"
       mi_dir = "MediaInfo_CLI_GNU_FromSource"
       mi_file = "MediaInfo_CLI_0.7.34_GNU_FromSource.tar.bz2"
       mi_url = "http://downloads.sourceforge.net/project/mediainfo/binary/mediainfo/0.7.34/MediaInfo_CLI_0.7.34_GNU_FromSource.tar.bz2"
