@@ -3,7 +3,7 @@ node[:applications].each do |app_name,data|
 
   case node[:instance_role]
     when "solo", "app", "app_master", "util"
-      mi_dir = "MediaInfo_CLI_0.7.38_GNU_FromSource"
+      mi_dir = "MediaInfo_CLI_GNU_FromSource"
       mi_file = "MediaInfo_CLI_0.7.38_GNU_FromSource.tar.bz2"
       mi_url = "http://downloads.sourceforge.net/project/mediainfo/binary/mediainfo/0.7.38/MediaInfo_CLI_0.7.38_GNU_FromSource.tar.bz2"
       
@@ -18,7 +18,7 @@ node[:applications].each do |app_name,data|
 
       execute "unarchive mi-to-install" do
         command "cd /data && tar jxf #{mi_file} && sync"
-        not_if { FileTest.directory?("/data/#{mi_dir}") }
+        #not_if { FileTest.directory?("/data/#{mi_dir}") } always extract because can't tell from the dir name if it's new or not
       end
       
       execute "build mi package" do
