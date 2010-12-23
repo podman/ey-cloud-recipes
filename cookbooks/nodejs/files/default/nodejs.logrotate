@@ -11,6 +11,6 @@
   extension gz
   
   postrotate
-  /bin/kill -USR1 `cat /data/sproutvideo/shared/pids/node.pid
+  /bin/kill -USR1 `cat /data/sproutvideo/shared/pids/node.pid`
   endscript
 }
