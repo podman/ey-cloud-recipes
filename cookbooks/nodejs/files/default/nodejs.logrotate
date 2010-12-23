@@ -1,0 +1,16 @@
+/var/log/node/node.log {
+  daily
+  rotate 30
+  dateext
+  compress
+  
+  missingok
+  notifempty
+  sharedscripts
+  
+  extension gz
+  
+  postrotate
+  /bin/kill -USR1 `cat /data/sproutvideo/shared/pids/node.pid
+  endscript
+}

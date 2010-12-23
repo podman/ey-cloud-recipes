@@ -73,6 +73,15 @@ node[:applications].each do |app_name,data|
             :app_name => app_name
           })
         end
+        
+        remote_file "/etc/logrotate.d/nodejs" do
+          owner "root"
+          group "root"
+          mode 0755
+          source "nodejs.logrotate"
+          backup false
+          action :create
+        end
 
         bash "monit-reload-restart" do
           user "root"
