@@ -3,7 +3,7 @@ node[:applications].each do |app_name,data|
   
   case node[:instance_role]
     when 'util'
-      if node[:name] == 'mongodb_master'
+      if node[:name] == 'nodejs'
         njs_dir = "node-v0.2.0"
         njs_file = "node-v0.2.0.tar.gz"
         njs_url = "http://nodejs.org/dist/node-v0.2.0.tar.gz"
