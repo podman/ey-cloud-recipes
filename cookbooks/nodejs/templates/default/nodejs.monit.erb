@@ -3,5 +3,5 @@ check host nodejs with address 0.0.0.0
   stop program = "/data/<%= @app_name %>/current/vendor/node/njs stop"
   if failed port 80 protocol HTTP
     request /embed/1898d2ba181ce2c490/adb4dfd08c188e0d
-    with timeout 5 seconds
+    with timeout 10 seconds
     then restart
