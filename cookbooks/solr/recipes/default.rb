@@ -12,7 +12,7 @@ if ['solo', 'util'].include?(node[:instance_role])
   else
     solr_dir = "apache-solr-1.4.1"
     solr_file = "apache-solr-1.4.1.tgz"
-    solr_url = "http://mirror.its.uidaho.edu/pub/apache/lucene/solr/1.4.1/apache-solr-1.4.0.tgz"
+    solr_url = "http://mirror.its.uidaho.edu/pub/apache/lucene/solr/1.4.1/apache-solr-1.4.1.tgz"
   end
 
   directory "/var/run/solr" do
