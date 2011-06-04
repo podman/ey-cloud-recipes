@@ -48,10 +48,10 @@ node[:applications].each do |app,data|
     user node[:owner_name]
     group node[:owner_name]
     command("if [ ! -e /data/#{app}/jettyapps/solr ]; then cd /data/#{app}/jettyapps && " +
-            "wget -O apache-solr-1.4.0.tgz http://mirror.cc.columbia.edu/pub/software/apache/lucene/solr/1.4.0/apache-solr-1.4.0.tgz && " +
-            "tar -xzf apache-solr-1.4.0.tgz && " +
-            "mv apache-solr-1.4.0/example solr && " +
-            "rm -rf apache-solr-1.4.0; fi")
+            "wget -O apache-solr-1.4.1.tgz http://mirror.cc.columbia.edu/pub/software/apache/lucene/solr/1.4.1/apache-solr-1.4.1.tgz && " +
+            "tar -xzf apache-solr-1.4.1.tgz && " +
+            "mv apache-solr-1.4.1/example solr && " +
+            "rm -rf apache-solr-1.4.1; fi")
     action :run
   end
  
