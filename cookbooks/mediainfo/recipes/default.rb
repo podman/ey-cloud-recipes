@@ -4,8 +4,8 @@ node[:applications].each do |app_name,data|
   case node[:instance_role]
     when "solo", "app", "app_master", "util"
       mi_dir = "MediaInfo_CLI_GNU_FromSource"
-      mi_file = "MediaInfo_CLI_0.7.53_GNU_FromSource.tar.bz2"
-      mi_url = "http://downloads.sourceforge.net/project/mediainfo/binary/mediainfo/0.7.53/MediaInfo_CLI_0.7.53_GNU_FromSource.tar.bz2"
+      mi_file = "MediaInfo_CLI_0.7.63_GNU_FromSource.tar.bz2"
+      mi_url = "http://downloads.sourceforge.net/project/mediainfo/binary/mediainfo/0.7.63/MediaInfo_CLI_0.7.63_GNU_FromSource.tar.bz2"
       
       remote_file "/data/#{mi_file}" do
         source "#{mi_url}"
@@ -23,7 +23,7 @@ node[:applications].each do |app_name,data|
       
       execute "build mi package" do
         command "cd /data/#{mi_dir} && ./CLI_Compile.sh && cd /data/#{mi_dir}/MediaInfo/Project/GNU/CLI && make install"
-        not_if { FileTest.exists?("/usr/local/bin/mediainfo") && !`mediainfo --Version`.match('0.7.53').nil? }
+        not_if { FileTest.exists?("/usr/local/bin/mediainfo") && !`mediainfo --Version`.match('0.7.63').nil? }
       end 
       
     end
