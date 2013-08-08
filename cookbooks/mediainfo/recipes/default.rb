@@ -7,7 +7,7 @@ node[:applications].each do |app_name,data|
         version "0.7.64"
       end
 
-      package "dev-db/redis" do
+      package "media-video/mediainfo" do
         version "0.7.64"
         action :upgrade
       end
