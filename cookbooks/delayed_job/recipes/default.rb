@@ -1,46 +1,43 @@
-if ['solor', 'app', 'app_master'].include?(node[:instance_role])
+#
+# Cookbook Name:: delayed_job
+# Recipe:: default
+#
 
-  worker_name = "delayed_job"
-
+if node[:instance_role] == "solo" || (node[:instance_role] == "util" && node[:name] !~ /^(mongodb|redis|memcache)/) || node[:instance_role] == 'app' || node[:instance_role] == 'app_master'
   node[:applications].each do |app_name,data|
-    
-    remote_file "/engineyard/bin/dj" do
-      owner "root"
-      group "root"
-      mode 0755
-      source "dj"
-    end
-    
-    worker_count = 1
-    
-    case node[:ec2][:instance_type]
-    when 'm1.small': worker_count = 2
-    when 'c1.medium': worker_count = 4
-    when 'c1.xlarge': worker_count = 8
+  
+    # determine the number of workers to run based on instance size
+    if node[:instance_role] == 'solo'
+      worker_count = 1
     else
-      worker_count = 2
+      case node[:ec2][:instance_type]
+      when 'm1.small' then worker_count = 2
+      when 'c1.medium' then worker_count = 4
+      when 'c1.xlarge' then worker_count = 8
+      else 
+        worker_count = 2
+      end
     end
     
     worker_count.times do |count|
-      template "/etc/monit.d/delayed_job_worker.#{count+1}.#{app_name}.monitrc" do
-        source "delayed_job.monit.erb"
+      template "/etc/monit.d/delayed_job#{count+1}.#{app_name}.monitrc" do
+        source "dj.monitrc.erb"
         owner "root"
         group "root"
         mode 0644
         variables({
           :app_name => app_name,
           :user => node[:owner_name],
-          :worker_name => "#{app_name}_deplayed_job_#{count+1}",
+          :worker_name => "#{app_name}_delayed_job#{count+1}",
           :framework_env => node[:environment][:framework_env]
         })
       end
     end
     
-    bash "monit-reload-restart" do
-      user "root"
-      code "pkill -9 monit && monit"
+    execute "monit reload" do
+       action :run
+       epic_fail true
     end
-    
+      
   end
 end
-    
