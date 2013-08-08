@@ -69,7 +69,7 @@ server {
       set $test "${test}M";
     }
     if ($test != VPM) {
-      proxy_pass http://sproutvideo_upstream;
+      proxy_pass http://upstream_sproutvideo;
       break;
     }
     upload_pass /internalvideos;
@@ -84,7 +84,7 @@ server {
 
   location /internalvideos {
     include /etc/nginx/common/proxy.conf;
-    proxy_pass http://sproutvideo_upstream;
+    proxy_pass http://upstream_sproutvideo;
     break;
   }
 
