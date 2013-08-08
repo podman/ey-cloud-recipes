@@ -1,0 +1,110 @@
+# This directive describes a set of servers, which can be used in directives proxy_pass and fastcgi_pass as a single entity. They can listen to server on different ports and furthermore, it is possible to simultaneously use a server that listens on both TCP and Unix sockets.
+# Review http://wiki.nginx.org/HttpUpstreamModule for more Documentation
+upstream upstream_sproutvideo {
+  server unix:/var/run/engineyard/unicorn_sproutvideo.sock fail_timeout=0;
+}
+limit_req_zone $binary_remote_addr zone=one:10m rate=100r/m;
+# Directive assigns configuration for the virtual server.
+server {
+# The listen directive specifies the address and port accepted by the enclosing server {...} block. It is possible to specify only an address, only a port, or a server name as the address.
+  listen 81;
+
+  #
+  # Server Names
+  #
+  # This is the list of IP's and/or domain names with any wildcards or
+  # subdomains. The special value '_' is used to match all domains and IPs and
+  # generally denotes the default server for the entire Nginx process.
+  #
+  # Note that if you specify any domains with wild cards, the very first domain
+  # listed must be without a wild card. For example:
+  #
+  # server_name www.mydomain.org *.mydomain.org;
+  #
+  # It is good practice to include wildcard subdomains so that Nginx will not
+  # require a restart when new services are added for an application.
+  #
+  server_name _;
+
+  #
+  # The application root which is inherited for all location blocks below.
+  #
+  root /data/sproutvideo/current/public;
+
+  access_log /var/log/engineyard/nginx/sproutvideo.access.log main;
+
+  error_log /var/log/engineyard/nginx/sproutvideo.error.log notice;
+  # error_log /dev/null notice;
+
+  include /etc/nginx/common/servers.conf;
+
+  # Location for the Upstream (a/k/a Unicorn or Mongrel)
+  location @app_sproutvideo {
+  include /etc/nginx/common/proxy.conf;
+  proxy_pass http://upstream_sproutvideo;
+  }
+
+  location /videos/upload {
+    upload_pass @app_sproutvideo;
+    upload_store /mnt/uploads;
+    upload_store_access user:rw group:rw all:r;
+    upload_set_form_field video[source_video][original_name] "$upload_file_name";
+    upload_set_form_field video[source_video][content_type] "$upload_content_type";
+    upload_set_form_field video[source_video][filepath] "$upload_tmp_path";
+    upload_pass_form_field "^authenticity_token$|^_vad_session$|^single$";
+    upload_cleanup 400 404 499 500-505;
+  }
+
+  location /v1 {
+    limit_req zone=one burst=5 nodelay;
+    error_page 503 /503.json;
+    include /etc/nginx/common/proxy.conf;
+    if ( $request_uri ~ ^\/v1\/videos(.*)$) {
+      set $test V;
+    }
+    if ( $request_method = POST) {
+      set $test "${test}P";
+    }
+    if ( $content_type ~ ^multipart\/form-data) {
+      set $test "${test}M";
+    }
+    if ($test != VPM) {
+      proxy_pass http://sproutvideo_upstream;
+      break;
+    }
+    upload_pass /internalvideos;
+    upload_store /mnt/uploads;
+    upload_store_access user:rw group:rw all:r;
+    upload_set_form_field source_video[original_name] "$upload_file_name";
+    upload_set_form_field source_video[content_type] "$upload_content_type";
+    upload_set_form_field source_video[filepath] "$upload_tmp_path";
+    upload_pass_form_field "^.*$";
+    upload_cleanup 400 404 413 415 499 500-505;
+  }
+
+  location /internalvideos {
+    include /etc/nginx/common/proxy.conf;
+    proxy_pass http://sproutvideo_upstream;
+    break;
+  }
+
+
+  # set Expire header on assets: see http://developer.yahoo.com/performance/rules.html#expires
+  location ~ ^/(images|assets|javascripts|stylesheets)/ {
+  try_files  $uri $uri/index.html /last_assets/$uri /last_assets/$uri.html @app_sproutvideo;
+  expires 10y;
+  }
+
+  location / {
+  if (-f $document_root/system/maintenance.html) { return 503; }
+    # auth is disabled for this server
+    # auth_basic            "Restricted";
+    # auth_basic_user_file  /etc/nginx/servers/sproutvideo.users;
+  try_files  $uri $uri/index.html $uri.html @app_sproutvideo;
+  }
+
+  location = /500.html {
+    root /data/sproutvideo/current/public;
+  }
+  include /etc/nginx/servers/sproutvideo/custom.conf;
+}
