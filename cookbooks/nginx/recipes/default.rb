@@ -13,9 +13,14 @@ if ['app', 'app_master'].include?(node[:instance_role])
 		mode 0644
 	end
 
-	execute "remove_default_configurations" do
+	execute "remove default config" do
 		command "rm /etc/nginx/servers/sproutvideo.conf"
+		if { FileTest.exits?("/etc/nginx/servers/sproutvideo.conf") }
+	end
+
+	execute "remove default ssl config" do
 		command "rm /etc/nginx/servers/sproutvideo.ssl.conf"
+		if { FileTest.exists?("/etc/nginx/servers/sproutvideo.ssl.conf")}
 	end
 
 	execute "restarting nginx" do
