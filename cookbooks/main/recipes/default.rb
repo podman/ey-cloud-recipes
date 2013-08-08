@@ -152,3 +152,4 @@ include_recipe "sunspot"
 
 require_recipe "mediainfo"
 require_recipe "delayed_job"
+require_recipe "nginx"
