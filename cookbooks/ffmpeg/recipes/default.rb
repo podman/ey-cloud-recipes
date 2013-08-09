@@ -3,13 +3,9 @@ node[:applications].each do |app_name,data|
 
   case node[:instance_role]
     when "solo", "app", "app_master", "util"
-      enable_package "media-video/ffmpeg" do
-        version "1.2.1"
-      end
-
       package "media-video/ffmpeg" do
-        version "1.2.1"
-        action :upgrade
+        version "0.10.3"
+        action :install
       end
       
     end
