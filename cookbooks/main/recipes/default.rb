@@ -151,6 +151,6 @@ include_recipe "sunspot"
 #end
 
 require_recipe "mediainfo"
-#require_recipe "delayed_job"
+require_recipe "delayed_job"
 require_recipe "ffmpeg"
 require_recipe "nginx"
