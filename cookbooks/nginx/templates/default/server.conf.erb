@@ -6,6 +6,12 @@ upstream upstream_sproutvideo {
 limit_req_zone $binary_remote_addr zone=one:10m rate=100r/m;
 # Directive assigns configuration for the virtual server.
 server {
+  listen 81;
+  server_name www.sproutvideo.com;
+  return 301 $scheme://sproutvideo.com/$request_uri;
+}
+
+server {
 # The listen directive specifies the address and port accepted by the enclosing server {...} block. It is possible to specify only an address, only a port, or a server name as the address.
   listen 81;
 

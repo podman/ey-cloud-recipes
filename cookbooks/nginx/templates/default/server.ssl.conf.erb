@@ -4,12 +4,6 @@
   server unix:/var/run/engineyard/unicorn_sproutvideo.sock fail_timeout=0;
 }
 
-server {
-  listen 444;
-  server_name www.sproutvideo.com
-  return 301 $scheme://sproutvideo.com/$request_uri
-}
-
 # Directive assigns configuration for the virtual server.
 server {
 # The listen directive specifies the address and port accepted by the enclosing server {...} block. It is possible to specify only an address, only a port, or a server name as the address.
