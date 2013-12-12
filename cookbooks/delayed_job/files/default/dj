@@ -13,18 +13,18 @@ usage() {
 
 if [ $# -lt 3 ]; then usage; fi
 
+OPTIONS=":queues => ['default', '$HOSTNAME']"
 if [ $4 ]; then
   NAME="_$4"
-
+  
   if [ $5 ]; then
-    OPTIONS=":max_priority => $5"
+    OPTIONS="$OPTIONS, :max_priority => $5"
     if [ $6 ]; then
       OPTIONS="$OPTIONS, :min_priority => $6"
     fi
-    OPTIONS="{$OPTIONS}"
   fi
 fi
-
+OPTIONS="{$OPTIONS}"
 if [ "`whoami`" != "root" ]; then
   logger -t `basename $0` -s "Must be run as root" 
   exit 1
